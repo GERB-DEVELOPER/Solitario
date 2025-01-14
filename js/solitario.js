@@ -1,7 +1,7 @@
 // Array de palos
 let palos = ["viu", "cua", "hex", "cir"];
 // Array de números
-let numeros = [7,8,9, 10, 11, 12];
+let numeros = [ 12];
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
 let paso = 3;
 // Tapetes              
@@ -372,13 +372,32 @@ function realizarMovimiento(carta, origen, destinoId) {
         }
     };
 });
+
+
 // Verificar fin del juego
 function verificarFinJuego() {
     if (mazoInicial.length === 0 && mazoSobrantes.length === 0) {
         clearInterval(temporizador);
-        alert(`¡Juego terminado!\nTiempo: ${contTiempo.innerText}\nMovimientos: ${contMovimientos.innerText}`);
+
+        // Mostrar el pop-up con el mensaje
+        document.getElementById("popupFinJuego").style.display = "block";
     }
 }
+
+// Función para cerrar el pop-up
+document.getElementById("cerrarPopup").addEventListener("click", function() {
+    document.getElementById("popupFinJuego").style.display = "none";
+});
+
+// Función para reiniciar el juego
+document.getElementById("reiniciarJuego").addEventListener("click", function() {
+    document.getElementById("popupFinJuego").style.display = "none";
+    comenzarJuego();
+});
+
+
+
+
 // Función para mover cartas de sobrantes a inicial
 function regresarCartasAInicial() {
     // Solo permitir el regreso si el mazo inicial está completamente vacío
