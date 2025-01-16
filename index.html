@@ -39,34 +39,36 @@
 				y en la parte inferior los cuatro restantes. Los contadores de los
 				mazos de cartas de cada tapete están indicados oportunamente dentro
 				de elementos span -->
-    <div id="mesa">
-      <div class="tapetes_superiores">
-        <div id="inicial" class="tapete">
-          <span id="contador_inicial" class="contador">48</span>
-        </div>
-        <div id="sobrantes" class="tapete">
-          <span id="contador_sobrantes" class="contador">0</span>
-        </div>
+        <div id="mesa">
+          <div class="tapetes_superiores">
+              <div id="inicial" class="tapete">
+                  <span class="contador">48</span>
+              </div>
+              <div id="sobrantes" class="tapete">
+                  <span class="contador">0</span>
+              </div>
+          </div>
+          <div id="receptor1" class="tapete receptor">
+              <span class="contador">0</span>
+          </div>
+          <div id="receptor2" class="tapete receptor">
+              <span class="contador">0</span>
+          </div>
+          <div id="receptor3" class="tapete receptor">
+              <span class="contador">0</span>
+          </div>
+          <div id="receptor4" class="tapete receptor">
+              <span class="contador">0</span>
+          </div>
       </div>
-      <div id="receptor1" class="tapete receptor">
-        <span id="contador_receptor1" class="contador">0</span>
-      </div>
-      <div id="receptor2" class="tapete receptor">
-        <span id="contador_receptor2" class="contador">0</span>
-      </div>
-      <div id="receptor3" class="tapete receptor">
-        <span id="contador_receptor3" class="contador">0</span>
-      </div>
-      <div id="receptor4" class="tapete receptor">
-        <span id="contador_receptor4" class="contador">0</span>
-      </div>
-    </div>
-    <div id="popupFinJuego" class="popup"
-      style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 10px;">
+      
+
+    <div id="popupFinJuego" class="popup">
       <p>¡Juego terminado!</p>
       <button id="cerrarPopup" class="btn btn-danger">Cerrar</button>
       <button id="reiniciarJuego" class="btn btn-primary">Reiniciar Juego</button>
     </div>
+
 
 
     <!-- Botón de reset que reinicia todo: partida, contadores de tiempo, de movimientos, ... -->

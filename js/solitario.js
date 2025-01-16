@@ -1,7 +1,7 @@
 // Array de palos
 let palos = ["viu", "cua", "hex", "cir"];
 // Array de números
-let numeros = [ 12];
+let numeros = [10,11,12];
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
 let paso = 3;
 // Tapetes              
@@ -48,21 +48,21 @@ function limpiarTapetes() {
     const contadorReceptor1 = tapeteReceptor1.querySelector('.contador');
     const contadorReceptor2 = tapeteReceptor2.querySelector('.contador');
     const contadorReceptor3 = tapeteReceptor3.querySelector('.contador');
-    const contadorReceptor4 = tapeteReceptor4.querySelector('.contador');  
+    const contadorReceptor4 = tapeteReceptor4.querySelector('.contador');
     // Limpiamos los tapetes
     tapeteInicial.innerHTML = '';
     tapeteSobrantes.innerHTML = '';
     tapeteReceptor1.innerHTML = '';
     tapeteReceptor2.innerHTML = '';
     tapeteReceptor3.innerHTML = '';
-    tapeteReceptor4.innerHTML = ''; 
+    tapeteReceptor4.innerHTML = '';
     // Restauramos los contadores
     if (contadorInicial) tapeteInicial.appendChild(contadorInicial);
     if (contadorSobrantes) tapeteSobrantes.appendChild(contadorSobrantes);
     if (contadorReceptor1) tapeteReceptor1.appendChild(contadorReceptor1);
     if (contadorReceptor2) tapeteReceptor2.appendChild(contadorReceptor2);
     if (contadorReceptor3) tapeteReceptor3.appendChild(contadorReceptor3);
-    if (contadorReceptor4) tapeteReceptor4.appendChild(contadorReceptor4); 
+    if (contadorReceptor4) tapeteReceptor4.appendChild(contadorReceptor4);
     // Reiniciamos los arrays de mazos
     mazoInicial = [];
     mazoSobrantes = [];
@@ -85,32 +85,32 @@ function crearBaraja() {
             carta.draggable = true;
             carta.setAttribute("data-palo", palos[p]);
             carta.setAttribute("data-numero", numeros[n]);
-            carta.setAttribute("data-color", esColorNaranja(palos[p]) ? "naranja" : "gris");          
+            carta.setAttribute("data-color", esColorNaranja(palos[p]) ? "naranja" : "gris");
             // Aquí agregamos la inicialización de eventos para cada carta
             inicializarEventosCarta(carta);
-            
+
             mazoInicial.push(carta);
         }
     }
 }
 // Esta es la función que inicializa los eventos de cada carta
 function inicializarEventosCarta(carta) {
-    carta.ondragstart = function(e) {
+    carta.ondragstart = function (e) {
         if (!this.draggable) {
             e.preventDefault();
             return false;
-        }       
+        }
         e.dataTransfer.setData("text/plain/numero", this.dataset.numero);
         e.dataTransfer.setData("text/plain/palo", this.dataset.palo);
         e.dataTransfer.setData("text/plain/color", this.dataset.color);
         e.dataTransfer.setData("text/plain/origen", this.parentNode.id);
         this.classList.add('dragging');
     };
-    
-    carta.ondragend = function(e) {
+
+    carta.ondragend = function (e) {
         this.classList.remove('dragging');
         actualizarCartasArrastrables();
-        
+
         // Verificar si necesitamos regresar cartas al mazo inicial
         if (mazoInicial.length === 0 && mazoSobrantes.length > 0) {
             setTimeout(regresarCartasAInicial, 100);
@@ -137,7 +137,7 @@ function cargarTapeteInicial(mazo) {
         carta.style.zIndex = index + 1;
         tapeteInicial.appendChild(carta);
     });
-    
+
     actualizarCartasArrastrables();
     actualizarContadorCartas();
 }
@@ -146,12 +146,12 @@ function actualizarCartasArrastrables() {
     // Primero desactivar todas las cartas
     document.querySelectorAll('img[data-palo]').forEach(carta => {
         carta.draggable = false;
-    }); 
+    });
     // Activar solo las cartas superiores
     if (mazoInicial.length > 0) {
         const cartaInicial = mazoInicial[mazoInicial.length - 1];
         if (cartaInicial) cartaInicial.draggable = true;
-    }   
+    }
     if (mazoSobrantes.length > 0) {
         const cartaSobrante = mazoSobrantes[mazoSobrantes.length - 1];
         if (cartaSobrante) cartaSobrante.draggable = true;
@@ -189,23 +189,23 @@ function esMovimientoValido(carta, tapeteDestino) {
     let numero = parseInt(carta.dataset.numero);
     let palo = carta.dataset.palo;
     let color = carta.dataset.color;
-    let origenId = carta.parentNode.id;  
+    let origenId = carta.parentNode.id;
     // Prevenir CUALQUIER movimiento de sobrantes a inicial si hay cartas en inicial
     if (tapeteDestino.id === 'inicial' && origenId === 'sobrantes' && mazoInicial.length > 0) {
         console.log("Movimiento bloqueado: el tapete inicial aún tiene cartas");
         return false;
-    }  
+    }
     // Para tapetes receptores
     if (tapeteDestino.classList.contains('receptor')) {
-        let cartasEnTapete = Array.from(tapeteDestino.getElementsByTagName('img'));       
+        let cartasEnTapete = Array.from(tapeteDestino.getElementsByTagName('img'));
         if (cartasEnTapete.length === 0) {
             return numero === 12;
-        }       
+        }
         let ultimaCarta = cartasEnTapete[cartasEnTapete.length - 1];
         let ultimoNumero = parseInt(ultimaCarta.dataset.numero);
-        let ultimoColor = ultimaCarta.dataset.color;    
+        let ultimoColor = ultimaCarta.dataset.color;
         return (numero === ultimoNumero - 1) && (color !== ultimoColor);
-    }   
+    }
     // Para el tapete inicial, solo permitir movimientos desde sobrantes cuando está vacío
     if (tapeteDestino.id === 'inicial') {
         if (origenId === 'sobrantes' && mazoInicial.length > 0) {
@@ -213,27 +213,27 @@ function esMovimientoValido(carta, tapeteDestino) {
             return false;
         }
         return origenId === 'sobrantes' && mazoInicial.length === 0;
-    }  
+    }
     return true;
 }
 // Segunda función: manejar el drop
 function manejarDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const numero = e.dataTransfer.getData("text/plain/numero");
     const palo = e.dataTransfer.getData("text/plain/palo");
     const origen = e.dataTransfer.getData("text/plain/origen");
-    
+
     console.log("Intento de drop:", {
         numero: numero,
         palo: palo,
         origen: origen,
         destino: e.currentTarget.id
     });
-    
+
     let carta = document.querySelector(`[data-palo="${palo}"][data-numero="${numero}"]`);
-    
+
     if (carta && esMovimientoValido(carta, e.currentTarget)) {
         console.log("Movimiento válido - realizando movimiento");
         realizarMovimiento(carta, origen, e.currentTarget.id);
@@ -249,24 +249,24 @@ function manejarDrop(e) {
         e.preventDefault();
         e.stopPropagation();
     };
-    
+
     tapete.ondrop = manejarDrop;
 });
 // Arrancar el tiempo
 function arrancarTiempo() {
     if (temporizador) clearInterval(temporizador);
     segundos = 0;
-    
+
     function actualizarTiempo() {
         let horas = Math.floor(segundos / 3600);
         let minutos = Math.floor((segundos % 3600) / 60);
         let segs = segundos % 60;
-        
-        contTiempo.innerText = 
+
+        contTiempo.innerText =
             `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
         segundos++;
     }
-    
+
     actualizarTiempo();
     temporizador = setInterval(actualizarTiempo, 1000);
 }
@@ -277,9 +277,9 @@ function realizarMovimiento(carta, origen, destinoId) {
 
     // Determinar mazos origen y destino
     let mazoOrigen, mazoDestino;
-    
+
     // Asignar mazo origen
-    switch(origen) {
+    switch (origen) {
         case 'inicial': mazoOrigen = mazoInicial; break;
         case 'sobrantes': mazoOrigen = mazoSobrantes; break;
         case 'receptor1': mazoOrigen = mazoReceptor1; break;
@@ -287,9 +287,9 @@ function realizarMovimiento(carta, origen, destinoId) {
         case 'receptor3': mazoOrigen = mazoReceptor3; break;
         case 'receptor4': mazoOrigen = mazoReceptor4; break;
     }
-    
+
     // Asignar mazo destino
-    switch(destinoId) {
+    switch (destinoId) {
         case 'inicial': mazoDestino = mazoInicial; break;
         case 'sobrantes': mazoDestino = mazoSobrantes; break;
         case 'receptor1': mazoDestino = mazoReceptor1; break;
@@ -297,7 +297,7 @@ function realizarMovimiento(carta, origen, destinoId) {
         case 'receptor3': mazoDestino = mazoReceptor3; break;
         case 'receptor4': mazoDestino = mazoReceptor4; break;
     }
-    
+
     // Remover la carta del mazo origen
     const index = mazoOrigen.indexOf(carta);
     if (index !== -1) {
@@ -310,7 +310,7 @@ function realizarMovimiento(carta, origen, destinoId) {
         carta.style.top = '0px';
         carta.style.left = '0px';
         carta.style.zIndex = mazoSobrantes.length + 1;
-    } 
+    }
     // Manejar el posicionamiento para el tapete inicial
     else if (destinoId === 'inicial') {
         carta.style.position = 'absolute';
@@ -325,16 +325,16 @@ function realizarMovimiento(carta, origen, destinoId) {
         carta.style.left = '0';
         carta.style.zIndex = mazoDestino.length + 1;
     }
-    
+
     // Añadir la carta al mazo destino
     mazoDestino.push(carta);
     tapeteDestino.appendChild(carta);
-    
+
     // Verificar si necesitamos regresar cartas al mazo inicial
     if (origen === 'inicial' && mazoInicial.length === 0 && mazoSobrantes.length > 0) {
         setTimeout(regresarCartasAInicial, 100);
     }
-    
+
     actualizarContadorCartas();
     actualizarCartasArrastrables();
 }
@@ -344,27 +344,27 @@ function realizarMovimiento(carta, origen, destinoId) {
         e.preventDefault();
         e.stopPropagation();
     };
-    
+
     tapete.ondragover = (e) => {
         e.preventDefault();
         e.stopPropagation();
     };
-    
+
     tapete.ondragleave = (e) => {
         e.preventDefault();
         e.stopPropagation();
     };
-    
+
     tapete.ondrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const palo = e.dataTransfer.getData("text/plain/palo");
         const numero = e.dataTransfer.getData("text/plain/numero");
         const origen = e.dataTransfer.getData("text/plain/origen");
-        
+
         let carta = document.querySelector(`[data-palo="${palo}"][data-numero="${numero}"]`);
-        
+
         if (carta && esMovimientoValido(carta, e.currentTarget)) {
             realizarMovimiento(carta, origen, e.currentTarget.id);
             contMovimientos.innerText = parseInt(contMovimientos.innerText) + 1;
@@ -374,26 +374,58 @@ function realizarMovimiento(carta, origen, destinoId) {
 });
 
 
+
 // Verificar fin del juego
 function verificarFinJuego() {
     if (mazoInicial.length === 0 && mazoSobrantes.length === 0) {
         clearInterval(temporizador);
-
+        esparcirCartas();
         // Mostrar el pop-up con el mensaje
         document.getElementById("popupFinJuego").style.display = "block";
+        
     }
-}
 
-// Función para cerrar el pop-up
-document.getElementById("cerrarPopup").addEventListener("click", function() {
+    // Función para cerrar el pop-up
+document.getElementById("cerrarPopup").addEventListener("click", function () {
     document.getElementById("popupFinJuego").style.display = "none";
 });
 
 // Función para reiniciar el juego
-document.getElementById("reiniciarJuego").addEventListener("click", function() {
+document.getElementById("reiniciarJuego").addEventListener("click", function () {
     document.getElementById("popupFinJuego").style.display = "none";
+
     comenzarJuego();
+    
 });
+}
+
+function esparcirCartas() {
+    const margenSeguridad = 10; // Márgenes para evitar desbordes
+    const body = document.body; // Obtener el body como contenedor
+    const rectBody = body.getBoundingClientRect(); // Obtener el tamaño total del body
+    const anchoBody = rectBody.width; // Ancho real del body
+    const altoBody = rectBody.height; // Alto real del body
+
+    const cartas = document.querySelectorAll('img[data-palo]'); // Todas las cartas
+
+    cartas.forEach(carta => {
+        // Calcular los límites dentro del body asegurándose de no desbordar
+        const maxTop = altoBody - carta.offsetHeight - margenSeguridad;
+
+        // Calcular una posición vertical aleatoria dentro de los límites
+        let topRandom = Math.random() * maxTop;
+
+        // Colocamos las cartas alineadas a la izquierda
+        let leftRandom = margenSeguridad; // Aseguramos que siempre estén a la izquierda
+
+        // Aplicar las posiciones a las cartas
+        carta.style.position = 'absolute'; // Necesario para aplicar las posiciones
+        carta.style.top = `${topRandom}px`;
+        carta.style.left = `${leftRandom}px`;
+    });
+}
+
+
 
 
 
@@ -406,27 +438,27 @@ function regresarCartasAInicial() {
         const cartasAMover = [...mazoSobrantes];
         // Limpiar el mazo sobrante
         mazoSobrantes.length = 0;
-        
+
         // Barajar las cartas antes de colocarlas en el mazo inicial
         barajar(cartasAMover);
-        
+
         // Colocar las cartas barajadas en el mazo inicial
         cartasAMover.forEach((carta, index) => {
             carta.style.position = 'absolute';
             carta.style.top = (index * paso) + 'px';
             carta.style.left = (index * paso) + 'px';
             carta.style.zIndex = index + 1;
-            
+
             mazoInicial.push(carta);
             tapeteInicial.appendChild(carta);
         });
-        
+
         actualizarContadorCartas();
         actualizarCartasArrastrables();
     }
 }
 // Evento de clic en el tapete inicial
-tapeteInicial.addEventListener('click', function() {
+tapeteInicial.addEventListener('click', function () {
     if (mazoInicial.length > 0) {
         // Mover carta de inicial a sobrantes
         let carta = mazoInicial.pop();
@@ -434,10 +466,10 @@ tapeteInicial.addEventListener('click', function() {
         carta.style.top = '0px';
         carta.style.left = '0px';
         carta.style.zIndex = mazoSobrantes.length + 1;
-        
+
         mazoSobrantes.push(carta);
         tapeteSobrantes.appendChild(carta);
-        
+
         // Si el tapete inicial se quedó sin cartas, regresar las de sobrantes
         if (mazoInicial.length === 0) {
             regresarCartasAInicial();
@@ -450,6 +482,6 @@ tapeteInicial.addEventListener('click', function() {
 // Evento de clic en el botón de reinicio
 document.getElementById("reset").addEventListener("click", comenzarJuego);
 // Iniciar el juego cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     comenzarJuego();
 });
