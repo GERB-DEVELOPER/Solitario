@@ -1,7 +1,7 @@
 // Array de palos
 let palos = ["viu", "cua", "hex", "cir"];
 // Array de números
-let numeros = [12];
+let numeros = [1,2,3,4,5,6,7,8,9,10,11,12];
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
 let paso = 3;
 // Tapetes              
@@ -409,32 +409,25 @@ document.getElementById("reiniciarJuego").addEventListener("click", function () 
 
 
 function esparcirCartas() {
-    const margenSeguridad = 10; // Márgenes para evitar desbordes
-    const anchoVentana = window.innerWidth; // Ancho de la ventana visible
-    const altoVentana = window.innerHeight; // Alto de la ventana visible
+    const mesa = document.getElementById('mesa'); 
+    const rectMesa = mesa.getBoundingClientRect(); 
 
-    const cartas = document.querySelectorAll('img[data-palo]'); // Todas las cartas
-
+    const cartas = document.querySelectorAll('img[data-palo]'); 
     cartas.forEach(carta => {
         const anchoCarta = carta.offsetWidth;
         const altoCarta = carta.offsetHeight;
+        const maxLeft = rectMesa.width - anchoCarta; 
+        const maxTop = rectMesa.height - altoCarta; 
+        if (maxLeft > 0 && maxTop > 0) {
+            const leftRandom = Math.random() * maxLeft; 
+            const topRandom = Math.random() * maxTop; 
 
-        const maxLeft = anchoVentana - anchoCarta - margenSeguridad;
-        const maxTop = altoVentana - altoCarta - margenSeguridad;
-
-        if (maxTop > 0 && maxLeft > 0) {
-            const leftRandom = Math.random() * maxLeft;
-            const topRandom = Math.random() * maxTop;
-
-            carta.style.position = 'absolute'; // Necesario para aplicar las posiciones
-            carta.style.top = `${topRandom}px`;
-            carta.style.left = `${leftRandom}px`;
+            carta.style.position = 'absolute'; 
+            carta.style.left = `${leftRandom}px`; 
+            carta.style.top = `${topRandom}px`; 
         }
     });
 }
-
-
-
 
 
 

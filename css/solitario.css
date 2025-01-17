@@ -110,17 +110,6 @@
 }
 
 
-
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%; /* Asegurar que el body ocupe toda la altura de la ventana */
-  overflow: hidden; /* Desactivar barras de desplazamiento */
-}
-
-
-
-
 .carta {
   position: absolute; /* Posicionamiento dentro del contenedor */
   width: 100px; /* Ancho de cada carta */
