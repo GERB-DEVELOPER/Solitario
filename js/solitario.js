@@ -1,7 +1,7 @@
 // Array de palos
 let palos = ["viu", "cua", "hex", "cir"];
 // Array de números
-let numeros = [10,11,12];
+let numeros = [12];
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
 let paso = 3;
 // Tapetes              
@@ -382,6 +382,14 @@ function verificarFinJuego() {
         esparcirCartas();
         // Mostrar el pop-up con el mensaje
         document.getElementById("popupFinJuego").style.display = "block";
+
+
+        const horas = Math.floor(segundos / 3600); 
+        const minutos = Math.floor((segundos % 3600) / 60); 
+        const segs = segundos % 60;
+        document.getElementById('tiempoDuracion').innerText =
+            `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
+
         
     }
 
@@ -399,31 +407,34 @@ document.getElementById("reiniciarJuego").addEventListener("click", function () 
 });
 }
 
+
 function esparcirCartas() {
     const margenSeguridad = 10; // Márgenes para evitar desbordes
-    const body = document.body; // Obtener el body como contenedor
-    const rectBody = body.getBoundingClientRect(); // Obtener el tamaño total del body
-    const anchoBody = rectBody.width; // Ancho real del body
-    const altoBody = rectBody.height; // Alto real del body
+    const anchoVentana = window.innerWidth; // Ancho de la ventana visible
+    const altoVentana = window.innerHeight; // Alto de la ventana visible
 
     const cartas = document.querySelectorAll('img[data-palo]'); // Todas las cartas
 
     cartas.forEach(carta => {
-        // Calcular los límites dentro del body asegurándose de no desbordar
-        const maxTop = altoBody - carta.offsetHeight - margenSeguridad;
+        const anchoCarta = carta.offsetWidth;
+        const altoCarta = carta.offsetHeight;
 
-        // Calcular una posición vertical aleatoria dentro de los límites
-        let topRandom = Math.random() * maxTop;
+        const maxLeft = anchoVentana - anchoCarta - margenSeguridad;
+        const maxTop = altoVentana - altoCarta - margenSeguridad;
 
-        // Colocamos las cartas alineadas a la izquierda
-        let leftRandom = margenSeguridad; // Aseguramos que siempre estén a la izquierda
+        if (maxTop > 0 && maxLeft > 0) {
+            const leftRandom = Math.random() * maxLeft;
+            const topRandom = Math.random() * maxTop;
 
-        // Aplicar las posiciones a las cartas
-        carta.style.position = 'absolute'; // Necesario para aplicar las posiciones
-        carta.style.top = `${topRandom}px`;
-        carta.style.left = `${leftRandom}px`;
+            carta.style.position = 'absolute'; // Necesario para aplicar las posiciones
+            carta.style.top = `${topRandom}px`;
+            carta.style.left = `${leftRandom}px`;
+        }
     });
 }
+
+
+
 
 
 
@@ -479,6 +490,8 @@ tapeteInicial.addEventListener('click', function () {
         }
     }
 });
+
+
 // Evento de clic en el botón de reinicio
 document.getElementById("reset").addEventListener("click", comenzarJuego);
 // Iniciar el juego cuando se carga la página

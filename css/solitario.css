@@ -1,7 +1,15 @@
+
+.central {
+  width: 100%;
+  height: 100%; /* Asegura que la sección central ocupe todo el espacio de la ventana */
+}
+
+
 .central {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+  position: relative; /* Esto es necesario para las cartas posicionadas absolutamente */
   .header-container {
     text-align: center;
     margin-bottom: 30px;
@@ -38,9 +46,7 @@
       }
 
     }
-    /* Todos los contadores estarán ubicados en la parte inferior 
-   derecha (position absolute) de los respectivos tapetes (position relative).
-*/
+
     .contador {
       position: absolute;
       bottom: 2px;
@@ -105,20 +111,15 @@
 
 
 
-
-.receptores {
-  display: flex; /* Alineación horizontal de los receptores */
-  justify-content: space-between; /* Distribuye los receptores por igual */
-  margin-top: 10px; /* Distancia entre los receptores y los tapetes superiores */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Asegurar que el body ocupe toda la altura de la ventana */
+  overflow: hidden; /* Desactivar barras de desplazamiento */
 }
 
-.receptor {
-  position: relative; /* Para posicionar las cartas dentro */
-  width: 100px; /* Ancho de cada receptor */
-  height: 140px; /* Alto de cada receptor */
-  background-color: #f0f0f0; /* Color diferente para los receptores */
-  border: 1px solid black; /* Borde visible */
-}
+
+
 
 .carta {
   position: absolute; /* Posicionamiento dentro del contenedor */
@@ -126,4 +127,21 @@
   height: 140px; /* Alto de cada carta */
   transition: top 0.5s ease, left 0.5s ease; /* Movimiento suave de las cartas */
 }
+
+body {
+  background: 
+      linear-gradient(rgba(70, 130, 180, 0.5), rgba(86, 166, 247, 0.5)),
+      url('../imagenes/Cartas_madera.jpg');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  animation: colorChange 10s infinite;
+}
+
+@keyframes colorChange {
+  0% { background-color: rgba(60, 179, 113, 0.5); } /* Verde suave */
+  50% { background-color: rgba(144, 238, 144, 0.5); } /* Verde claro */
+  100% { background-color: rgba(35, 60, 142, 0.5); } /* Verde oliva */
+}
+
 
