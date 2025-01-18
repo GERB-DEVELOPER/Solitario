@@ -1,15 +1,17 @@
-
-.central {
-  width: 100%;
-  height: 100%; /* Asegura que la sección central ocupe todo el espacio de la ventana */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
-
 
 .central {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
-  position: relative; /* Esto es necesario para las cartas posicionadas absolutamente */
+  position: relative; 
+  /* Esto es necesario para las cartas posicionadas absolutamente */
   .header-container {
     text-align: center;
     margin-bottom: 30px;
@@ -32,13 +34,17 @@
   }
   #mesa {
     /* Para los tapetes  clase para todos los tapetes*/
- 
+    position: absolute;
+    width: 90%;
+    height: 300px;
+
     .tapete {
       display: inline-block;
       position: relative;
       margin: 10px;
       border-radius: 10px;
       vertical-align: top;
+
       img {
         position: absolute;
         width: 100px;
@@ -90,7 +96,7 @@
   }
   #reset {
     display: block;
-    margin: 20px auto;
+    margin: 600px auto;
     padding: 10px 30px;
   }
 }
@@ -109,13 +115,16 @@
   z-index: 9999; 
 }
 
-
-.carta {
-  position: absolute; /* Posicionamiento dentro del contenedor */
-  width: 100px; /* Ancho de cada carta */
-  height: 140px; /* Alto de cada carta */
-  transition: top 0.5s ease, left 0.5s ease; /* Movimiento suave de las cartas */
+.cartas {
+  position: absolute;
+  z-index: 2;
+  top: 50%; /* Centra la carta verticalmente */
+  left: 50%; /* Centra la carta horizontalmente */
+  transform: translate(-50%, -50%); /* Asegura que la carta esté centrada */
+  width: 100px; /* Tamaño de la carta */
+  height: 140px; /* Tamaño de la carta */
 }
+
 
 body {
   background: 

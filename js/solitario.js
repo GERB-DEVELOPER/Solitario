@@ -1,7 +1,7 @@
 // Array de palos
 let palos = ["viu", "cua", "hex", "cir"];
 // Array de números
-let numeros = [1,2,3,4,5,6,7,8,9,10,11,12];
+let numeros = [11,12];
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
 let paso = 3;
 // Tapetes              
@@ -407,27 +407,39 @@ document.getElementById("reiniciarJuego").addEventListener("click", function () 
 });
 }
 
-
 function esparcirCartas() {
+    // Obtener la mesa (contenedor donde se distribuirán las cartas)
     const mesa = document.getElementById('mesa'); 
-    const rectMesa = mesa.getBoundingClientRect(); 
 
+    // Obtener las dimensiones de la mesa (contenerá las cartas)
+    const mesaAncho = mesa.offsetWidth;
+    const mesaAlto = mesa.offsetHeight;
+
+    // Obtener todas las cartas
     const cartas = document.querySelectorAll('img[data-palo]'); 
     cartas.forEach(carta => {
         const anchoCarta = carta.offsetWidth;
         const altoCarta = carta.offsetHeight;
-        const maxLeft = rectMesa.width - anchoCarta; 
-        const maxTop = rectMesa.height - altoCarta; 
+
+        // Calcular los valores máximos para la posición de las cartas dentro de la mesa
+        const maxLeft = mesaAncho - anchoCarta;  // Máximo valor para left (dentro de la mesa)
+        const maxTop = mesaAlto - altoCarta;    // Máximo valor para top (dentro de la mesa)
+
+        // Asegurarse de que la posición esté dentro de los límites de la mesa
         if (maxLeft > 0 && maxTop > 0) {
             const leftRandom = Math.random() * maxLeft; 
             const topRandom = Math.random() * maxTop; 
 
+            // Establecer la posición de la carta dentro de la mesa
             carta.style.position = 'absolute'; 
             carta.style.left = `${leftRandom}px`; 
             carta.style.top = `${topRandom}px`; 
         }
     });
 }
+
+
+
 
 
 
